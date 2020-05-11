@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>欣媛小屋</title>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/uploadfile.js}"></script>
+<style type="text/css">
+body{text-align:center}
+.main_body{margin:0 auto; width:400px; height:100px;}
+#change_btn{position: relative;}
+.his{font-size: 20px;}
+</style>
+</head>
+<body>
+	<div>
+		<label class="l-input l-file-btn">选择图片
+		    <input type="file" accept="image/*" name="brandLogoPic_butt" id="brandLogoPic_butt" class="up_img" onchange="uploadAvatar('brandLogoPic_butt',1024,400,200,'.jpg')">    
+	    </label>
+	</div>
+
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zx.mapper.ZxMapper" >
+
+	<select id="getLast" resultType="ZxEntity">
+		SELECT * FROM zx_domi ORDER BY time_ DESC LIMIT 1;
+	</select>
+	
+	<insert id="saveNew" parameterType="ZxEntity">
+		INSERT INTO zx_domi(flag_ , time_) VALUES (#{flag} , #{time});
+	</insert>
+	
+	<select id="getMaxEntityOfLastDay" parameterType="java.util.Date" resultType="ZxEntity">
+		SELECT * FROM zx_domi WHERE time_ <![CDATA[<]]> #{startOfDay} ORDER BY time_ DESC limit 1;
+	</select>
+	
+	<select id="getMinEntityOfNextDay" parameterType="java.util.Date" resultType="ZxEntity">
+		SELECT * FROM zx_domi WHERE time_ <![CDATA[>]]> #{endOfDay} ORDER BY time_ ASC limit 1;
+	</select>
+	
+	<select id="getMaxEntityOfToday" parameterType="java.util.Date" resultType="ZxEntity">
+		SELECT * FROM zx_domi WHERE time_ <![CDATA[<=]]> #{endOfDay} ORDER BY time_ DESC limit 1;
+	</select>
+	
+	<select id="queryBetweenIds" resultType="ZxEntity">
+		SELECT * FROM zx_domi WHERE id <![CDATA[>=]]> #{startId} AND id <![CDATA[<=]]> #{endId} ORDER BY time_ ASC;
+	</select>
+	
+	<select id="distinctDate" resultType="string">
+		SELECT DISTINCT DATE_FORMAT(time_ , '%Y-%m-%d') d FROM zx_domi ORDER BY d ASC;
+	</select>
+
+</mapper>
