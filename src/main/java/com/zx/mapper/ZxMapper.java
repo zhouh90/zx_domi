@@ -30,4 +30,6 @@ public interface ZxMapper {
 
 	List<String> distinctDate();
 
+	List<ZxEntity> getEntitysByStartDay(@Param("startDay") Date startDay);
+
 }

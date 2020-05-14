@@ -9,6 +9,11 @@ public class DateUtils {
 
 	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	private static final String TIME_FORMAT = "HH:mm";
+	private static final String DAY_FORMAT = "yyyy-MM-dd";
+
+	public static Date addDays(Date date, int days) {
+		return new Date(date.getTime() + days * 24 * 60 * 60 * 1000L);
+	}
 
 	public static Date strToDate(String strDateTime) {
 		try {
@@ -32,7 +37,11 @@ public class DateUtils {
 
 
 	public static String dateToStr(Date date) {
-		SimpleDateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
+		return dateToStr(date, TIME_FORMAT);
+	}
+
+	public static String dateToStr(Date date, String format) {
+		SimpleDateFormat formatter = new SimpleDateFormat(format);
 		return formatter.format(date);
 	}
 

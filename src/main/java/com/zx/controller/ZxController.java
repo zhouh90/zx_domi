@@ -1,5 +1,6 @@
 package com.zx.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -99,6 +100,42 @@ public class ZxController {
 		return result;
 	}
 
+	@GetMapping("hisDiagram")
+	@ResponseBody
+	public Map<String, Object> getHisDiagram(/* @RequestBody */ CommonParam param) {
+		DecimalFormat df = new DecimalFormat("0.00 ");
+		int term = -7;
+		try {
+			term = Integer.parseInt(param.getTerm());
+		} catch (Exception e) {
+		}
+		List<String> dateList = new ArrayList<>();
+		List<Double> timeList = new ArrayList<>();
+		while (term <= 0) {
+			Date day = DateUtils.addDays(new Date(), term);
+			String dayStr = DateUtils.dateToStr(day, "yyyy-MM-dd");
+			List<ShowVo> datas = getDataByDay(day);
+			long total = 0;
+			for (ShowVo showVo : datas) {
+				if ("睡眠".equals(showVo.getStatus())) {
+					total = total + (showVo.getEndTime() - showVo.getStartTime());
+				}
+			}
+			double d = (double) total / 1000 / 60 / 60;
+			Double hour = Double.parseDouble(df.format(d));
+			dateList.add(dayStr);
+			timeList.add(hour);
+			term++;
+		}
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 0);
+		result.put("dateList", dateList);
+		result.put("timeList", timeList);
+		return result;
+	}
+
+
+
 	private List<ShowVo> getDataByDay(Date date) {
 		Date startOfDay = DateUtils.getDayStartTime(date);
 		ZxEntity maxEntityOfLastDay = mapper.getMaxEntityOfLastDay(startOfDay);
@@ -116,6 +153,10 @@ public class ZxController {
 		int startId = maxEntityOfLastDay.getId();
 		int endId = minEntityOfNextDay.getId();
 		List<ZxEntity> list = mapper.queryBetweenIds(startId, endId);
+		return calShowVos(list, date, endOfDay);
+	}
+
+	private List<ShowVo> calShowVos(List<ZxEntity> list, Date date, Date endOfDay) {
 		List<ShowVo> vos = new ArrayList<>();
 		Dto dto = new Dto(0);
 		while (dto.getIndex() < list.size()) {

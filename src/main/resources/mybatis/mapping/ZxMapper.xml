@@ -29,5 +29,9 @@
 	<select id="distinctDate" resultType="string">
 		SELECT DISTINCT DATE_FORMAT(time_ , '%Y-%m-%d') d FROM zx_domi ORDER BY d ASC;
 	</select>
+	
+	<select id="getEntitysByStartDay" parameterType="java.util.Date" resultType="ZxEntity">
+		SELECT * FROM zx_domi WHERE time_ <![CDATA[>=]]> #{startDay};
+	</select>
 
 </mapper>
