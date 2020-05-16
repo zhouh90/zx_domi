@@ -13,10 +13,16 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/botton.css}">
 <style type="text/css">
-body{text-align:center}
+body{
+	text-align:center;
+}
 .main_body{margin:0 auto; width:400px; height:100px;}
 #change_btn{position: relative;}
 .his{font-size: 20px;}
+#pic{
+    vertical-align: middle;
+    width: 80%;
+}
 </style>
 </head>
 <body>
@@ -30,6 +36,9 @@ body{text-align:center}
     <br> <br> <br>
     <span class="his"><a href="/baby/report">查看历史战绩</a></span>
   </div>
+  <div>
+  	<img id="pic" src="/img/zxy-sleep.jpg"/>
+  </div>
 </body>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -40,11 +49,13 @@ $(document).ready(function() {
 		$('#change_btn').val("我睡了");
 		$('#change_btn').removeClass();
 		$('#change_btn').addClass("button button-glow button-rounded button-caution");
+		$('#pic').attr('src','/img/zxy-wake.jpg');
 	}else{
 		$('#current_text').text("已经进入梦乡");
 		$('#change_btn').val("我醒了");
 		$('#change_btn').removeClass();
 		$('#change_btn').addClass("button button-glow button-rounded button-raised button-primary");
+		$('#pic').attr('src','/img/zxy-sleep.jpg');
 	}
 });
 function changeStatus(){
@@ -53,16 +64,19 @@ function changeStatus(){
 	var nextStatusText;
 	var c;
 	var currentFlag = $('#current_status').val();
+	var imgPath = '';
 	if(currentFlag == 1){//醒着
 		flag = 0;
 		nextStatusText = "已经进入梦乡";
 		nextBtnVal = "我醒了";
 		c = "button button-glow button-rounded button-raised button-primary";
+		imgPath = "/img/zxy-sleep.jpg";
 	}else{//睡着
 		flag = 1;
 		nextStatusText = "正在与妈妈斗智斗勇";
 		nextBtnVal = "我睡了";
 		c = "button button-glow button-rounded button-caution";
+		imgPath = "/img/zxy-wake.jpg";
 	}
 	$('#change_btn').attr("disabled",false);
 	$.ajax({
@@ -78,6 +92,7 @@ function changeStatus(){
 	        $('#change_btn').removeClass();
 			$('#change_btn').addClass(c);
 			$('#change_btn').attr("disabled",false);
+			$('#pic').attr('src',imgPath);
 	    }
 	});
 }
