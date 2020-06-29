@@ -16,12 +16,56 @@ body{text-align:center}
 <body>
 	<div>
 		<label class="l-input l-file-btn">选择图片
-		    <input type="file" accept="image/*" name="brandLogoPic_butt" id="brandLogoPic_butt" class="up_img" onchange="uploadAvatar('brandLogoPic_butt',1024,400,200,'.jpg')">    
+		    <input type="file" accept="image/*" name="pic_upload_button" id="pic_upload" class="up_img" onchange="uploadAvatar()">    
+	    </label>
+	    <img id="test_img" src=""></img>
+	</div>
+	
+	<br/>
+	 <div>
+		<label class="l-input l-file-btn">
+		    <input type="button" id="req_cate" value="提交" onClick="queryCate()">    
 	    </label>
 	</div>
 
 </body>
 <script type="text/javascript">
 
+function queryCate(){
+	console.log('请求分类');
+	var paramStr = '{"secondCategoryId":1042,"details":[{"licenceId":378,"isMust":"Y","licenceName":"报关单","detailId":21380,"availableDate":null,"picPath":"http://static.beta.ule.com/mstore/user_10644/store_10644/images/20200522/9f369394a888b294.png","categoryAvaliableBegin":"2020-05-28","categoryAvaliableEnd":"2021-05-28"},{"licenceId":379,"licenceName":"出入境检验检疫证明","detailId":21381,"availableDate":null,"picPath":"http://static.beta.ule.com/mstore/user_10644/store_10644/images/20200522/9f369394a888b294.png","categoryAvaliableBegin":"2020-05-28","categoryAvaliableEnd":"2021-05-28"},{"licenceId":380,"licenceName":"食品生产许可证或食品经营许可证","detailId":21382,"availableDate":null,"picPath":"http://static.beta.ule.com/mstore/user_10644/store_10644/images/20200522/9f369394a888b294.png","categoryAvaliableBegin":"2020-05-28","categoryAvaliableEnd":"2021-05-28"}]}';
+	//var paramStr = '{"secondCategoryId":1007,"details":[{"detailId": 21347,"licenceId":378,"licenceName":"报关单","picPath":"http://static.beta.ule.com/mstore/user_21730/store_21730/images/20200518/479b0107187f5173.png","categoryAvaliableBegin":"2020-01-01","categoryAvaliableEnd":"2020-10-01"}]}';
+	var detail = new Object();
+	detail.detailId = 21347;
+	detail.licenceId = 378;
+	detail.licenceName = '报关单';
+	detail.picPath = "aaa";
+	detail.categoryAvaliableBegin = '2020-01-01';
+	detail.categoryAvaliableEnd = '2020-02-01';
+	var details = new Array();
+	details.push(detail);
+	var param = new Object();
+	param.secondCategoryId = 1007;
+	param.details = details;
+	$.ajax({
+		type : "POST",
+		url : 'http://merchant.dev.ule.com/merJoinIn/h5/cooperative/merCategory/saveMerApplyCategoryLicence.do',
+		//url:'https://merchant.beta.ule.com/merJoinIn/h5/cooperative/merCategory/entryCatetoryDownList.do',
+		//data :JSON.stringify(param),
+		data:paramStr,
+		headers:{'Content-Type':'application/json'},
+		dataType:'json',
+		cache : false,
+		xhrFields:{
+			withCredentials:true
+		},
+		success : function(jsonResult) {
+			console.log(jsonResult);
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log("error");
+		}
+	});
+}
 </script>
 </html>

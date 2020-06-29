@@ -59,38 +59,35 @@ function getImageWH(dom,callback){
 
 /* 上传图片 */
 /*maxSize:图片最大尺寸（KB），w:图片限制宽度（<0 则不限制），h:图片限制高度（<0 则不限制） */
-function uploadAvatar(domid,maxSize,w,h,ext) {
-	var imgUploadUrl = "http://merchant.beta.ule.com/merchantservice/h5/uploadImgServlet?merchantId=11223344";
-	var dom = $('#'+domid);
-	checkFile(dom,maxSize,w,h,ext,function(checkRes){
-		if(checkRes.check){
-			var data = new FormData();
-			$.each(dom[0].files, function(i, file) {
-				data.append('image', file);
-			});
-			$.ajax({
-				type : "POST",
-				dataType : "json",
-//				dataType: "jsonp",
-//			    jsonp: "callback",
-				url : imgUploadUrl,
-				data : data,
-				cache : false,
-				contentType : false, // 不可缺
-				processData : false, // 不可缺
-				success : function(jsonResult) {
-					if(jsonResult && jsonResult.returnCode==='0000'){
-						alert("上传失败");
-					}else{
-						alert("上传失败");
-					}
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("上传失败");
-				}
-			});
-		}else{
-			JEND.page.alert(checkRes.msg);
+function uploadAvatar() {
+	var imgUploadUrl = "https://merchant.beta.ule.com/merchantservice/h5/uploadImgServlet?merchantId=11223344";
+	//var imgUploadUrl = "https://merchant.beta.ule.com/merJoinIn/uploadMerApplyImg";
+	var data = new FormData();
+	$.each($('#pic_upload').files, function(i, file) {
+		data.append('image', file);
+	});
+	$.ajax({
+		type : "POST",
+		dataType : "json",
+		url : imgUploadUrl,
+		data : data,
+		cache : false,
+		contentType : false, // 不可缺
+		processData : false, // 不可缺
+		success : function(jsonResult) {
+			console.log(jsonResult);
+			console.log(jsonResult.returnCode);
+			if(jsonResult && jsonResult.returnCode == '0000'){
+				alert("上传成功");
+				$('#test_img').attr('src',jsonResult.data);
+			}else{
+				alert("上传失败");
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log("error");
+			alert("上传失败");
 		}
 	});
 }
+
